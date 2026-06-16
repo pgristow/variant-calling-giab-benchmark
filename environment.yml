@@ -1,0 +1,22 @@
+name: variant-call
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bwa-mem2
+  - samtools
+  - bcftools
+  - gatk4
+  - bedtools
+  - htslib
+  - rtg-tools
+  - igv-reports
+  - r-base=4.4
+  - r-ggplot2
+  - r-gt
+  - r-dplyr
+  - r-tidyr
+  - r-scales
+  - r-knitr
+  - r-rmarkdown
+  - quarto

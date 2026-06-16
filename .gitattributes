@@ -1,0 +1,6 @@
+# Keep shell scripts LF so they run correctly on Linux/WSL/CI regardless of host OS.
+*.sh text eol=lf
+# Treat sequencing inputs as binary (no EOL conversion).
+*.gz binary
+*.bed text eol=lf
+* text=auto

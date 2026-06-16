@@ -1,0 +1,5 @@
+caller,var_type,precision,recall,f1,tp,fp,fn
+bcftools,SNP,0.9938,1.0000,0.9969,1434,9,0
+bcftools,INDEL,0.9295,0.9185,0.9239,214,17,19
+gatk,SNP,1.0000,0.9986,0.9993,1432,0,2
+gatk,INDEL,0.9590,0.9657,0.9623,225,10,8

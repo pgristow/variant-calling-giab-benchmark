@@ -1,0 +1,33 @@
+name: Reproduce
+
+# Re-runs the full calling + benchmarking pipeline on every push from the committed
+# HG002 reads (green badge = the benchmark reproduces from a clean clone).
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up conda environment
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+
+      - name: Run pipeline + render (align, call, benchmark vs GIAB)
+        shell: bash -el {0}
+        run: make all
+
+      - name: Smoke-test outputs
+        shell: bash -el {0}
+        run: |
+          test -f docs/index.html
+          test -f results/benchmark_metrics.csv
+          test "$(grep -c , results/benchmark_metrics.csv)" -ge 5
+          echo "Variant benchmark reproduced successfully from a clean clone."

@@ -1,0 +1,178 @@
+---
+title: "Germline variant calling — and *proof* it's correct"
+subtitle: "HG002 chr20 vs the GIAB gold standard: bcftools and GATK, benchmarked"
+author: "Peter Ristow, PhD — Principal Scientist (NGS)"
+date: today
+engine: knitr
+---
+
+> **The question.** Anyone can produce a VCF. The real question a client has is: *can I trust
+> these calls?* This report calls germline variants two ways (bcftools and GATK) on a chr20 region
+> of the Genome-in-a-Bottle reference sample **HG002**, then **benchmarks both against the GIAB
+> gold-standard truth set** — reporting precision, recall and F1 for SNPs and indels separately.
+> I don't just call variants; I show you how often they're right.
+>
+> *Roche Principal Scientist (NGS) & PhD — I turn sequencing data into clean, reproducible answers.*
+
+::: {.callout-note collapse="true"}
+## How to reproduce this (one command)
+```bash
+git clone https://github.com/pgristow/variant-calling-giab-benchmark
+cd variant-calling-giab-benchmark
+conda env create -f environment.yml && conda activate variant-call
+make all     # align -> call (bcftools + GATK) -> benchmark vs GIAB -> render
+```
+The small HG002 reads and the region truth set are committed (HG002 is openly redistributable);
+only the chr20 reference is downloaded at run time. Provenance: `scripts/prepare_test_data.sh`.
+:::
+
+### The pipeline at a glance
+
+```{mermaid}
+flowchart LR
+    A[HG002 reads<br/>chr20 region, ~30x] --> B[bwa-mem2 align]
+    B --> C[sort + mark duplicates]
+    C --> D1[bcftools call]
+    C --> D2[GATK HaplotypeCaller]
+    D1 --> E[rtg vcfeval<br/>vs GIAB v4.2.1 truth]
+    D2 --> E
+    T[GIAB truth VCF<br/>+ confident BED] --> E
+    E --> F[Precision / Recall / F1<br/>SNP &amp; indel]
+    classDef truth fill:#e8f5e9,stroke:#2e7d32;
+    class T,F truth;
+```
+
+```{r}
+#| label: setup
+#| include: false
+suppressPackageStartupMessages({
+  library(dplyr); library(tidyr); library(ggplot2); library(gt); library(scales)
+})
+metrics <- read.csv("results/benchmark_metrics.csv")
+conc <- tryCatch(read.csv("results/caller_concordance.csv"), error = function(e) NULL)
+metrics <- metrics |>
+  mutate(across(c(precision, recall, f1), as.numeric),
+         caller = recode(caller, bcftools = "bcftools", gatk = "GATK"))
+```
+
+## 1 · Data
+
+[**HG002 / NA24385**](https://www.nist.gov/programs-projects/genome-bottle) is the Genome-in-a-Bottle
+Ashkenazi son — the community's most-used benchmarking sample, with an openly-consented (PGP) and
+freely redistributable genome and an authoritative **v4.2.1 truth set**. We use a 1 Mb chr20 region
+at ~30× so the whole pipeline runs in minutes; the GIAB truth set defines the right answer inside
+its high-confidence regions.
+
+## 2 · The benchmark scoreboard {#scoreboard}
+
+This is the table most freelancers never produce. For each caller and variant class, it reports
+**precision** (of the calls made, how many are real), **recall** (of the real variants, how many we
+found), and **F1** (their harmonic mean) — measured against the GIAB truth set.
+
+```{r}
+#| label: tbl-scoreboard
+metrics |>
+  mutate(Precision = precision, Recall = recall, F1 = f1) |>
+  select(Caller = caller, `Variant type` = var_type, Precision, Recall, F1, TP = tp, FP = fp, FN = fn) |>
+  arrange(`Variant type`, Caller) |>
+  gt(groupname_col = "Variant type") |>
+  tab_header(title = "Variant-calling accuracy vs GIAB v4.2.1 truth",
+             subtitle = "HG002 chr20:2,000,000–3,000,000, high-confidence regions") |>
+  fmt_percent(columns = c(Precision, Recall, F1), decimals = 2) |>
+  data_color(columns = c(Precision, Recall, F1),
+             fn = col_numeric(palette = c("#fee5d9", "#fcae91", "#74c476", "#238b45"),
+                              domain = c(0.9, 1.0))) |>
+  tab_options(row_group.font.weight = "bold")
+```
+
+::: {.callout-important}
+## What this means for you
+These are not vanity numbers — they are an **objective, third-party-anchored measure of whether the
+pipeline can be trusted** on data where the truth is known. SNP precision/recall in the high-99%s is
+the expected signature of a correctly built short-read germline pipeline; indels are harder and
+always score lower, which is exactly why reporting them *separately* is honest. When I run this on
+your samples, this same framework tells you — quantitatively — how much to trust the result.
+:::
+
+## 3 · bcftools vs GATK
+
+```{r}
+#| label: fig-pr
+#| fig-cap: "Precision–recall by caller and variant type. Top-right is better."
+ggplot(metrics, aes(recall, precision, colour = caller, shape = var_type)) +
+  geom_point(size = 5, alpha = 0.85) +
+  scale_x_continuous(labels = percent) + scale_y_continuous(labels = percent) +
+  labs(x = "Recall (sensitivity)", y = "Precision", colour = "Caller", shape = "Variant type") +
+  theme_bw(base_size = 13) +
+  ggtitle("Two callers, measured on the same truth set")
+```
+
+```{r}
+#| label: fig-concordance
+#| fig-cap: "Where the two callers agree and differ (raw call counts, before truth comparison)."
+if (!is.null(conc)) {
+  conc$set <- factor(conc$set, levels = c("bcftools_only", "shared", "gatk_only"))
+  ggplot(conc, aes(set, n, fill = set)) +
+    geom_col(width = 0.6) + geom_text(aes(label = n), vjust = -0.3) +
+    scale_fill_manual(values = c("#3182bd", "#31a354", "#e6550d"), guide = "none") +
+    labs(x = NULL, y = "variants") + theme_bw(base_size = 13) +
+    ggtitle("Caller concordance")
+}
+```
+
+::: {.callout-note collapse="true"}
+## Why don't the two callers agree completely?
+GATK's HaplotypeCaller locally re-assembles reads (strong on indels and complex regions); bcftools
+uses a faster pileup model. Disagreements concentrate at indels and low-complexity sequence. Neither
+is "wrong" — the benchmark shows which is better *for this data type*, which is how I'd pick a caller
+for your project rather than defaulting to one.
+:::
+
+## 4 · Interpretation & caveats
+
+::: {.callout-note}
+## What I would (and wouldn't) claim
+The pipeline recovers the GIAB truth at the accuracy expected of a correct short-read germline
+workflow, and the SNP-vs-indel split is reported honestly rather than hidden behind a single number.
+
+**Caveats:** (1) metrics are computed **inside GIAB high-confidence regions** — real genomes have
+hard regions (segmental duplications, repeats) where any caller degrades; a production report states
+this explicitly. (2) This is one 1 Mb region for speed; the same pipeline scales to exome/genome,
+where stratified benchmarking (by region difficulty) matters. (3) HG002 has a truth set, so we can
+score it; for a client's own sample, accuracy is estimated against a matched control or orthogonal
+data, not assumed. (4) No base-quality recalibration step is shown here for brevity — it is part of
+the production pipeline for clinical-grade work.
+
+**What I'd do with your data:** match the caller and filtering to your data type and decision (research
+vs clinical), and — where a truth or orthogonal set exists — give you a number like the one above
+instead of an unverifiable VCF.
+:::
+
+## 5 · Result
+
+```{r}
+#| label: result
+#| echo: false
+snp <- metrics |> filter(var_type == "SNP")
+best <- snp |> slice_max(f1, n = 1)
+cat(sprintf(paste0("Both callers were benchmarked against %s GIAB truth variants in the region. ",
+  "Best SNP performance: %s at F1 = %.1f%% (precision %.1f%%, recall %.1f%%). Full per-caller, ",
+  "per-type metrics are in results/benchmark_metrics.csv.\n"),
+  format(sum(metrics$tp[metrics$caller=='GATK']) + sum(metrics$fn[metrics$caller=='GATK']), big.mark=","),
+  best$caller, 100*best$f1, 100*best$precision, 100*best$recall))
+```
+
+**What a client gets:** validated calls, a quantified accuracy report (not just a VCF), a caller
+comparison, and this reproducible pipeline. **What stays mine:** the production engine (BQSR,
+joint-genotyping, region-stratified benchmarking, clinical filtering) in a private repo.
+
+---
+
+::: {.callout-tip collapse="true"}
+## Session & tool versions
+```{r}
+#| echo: false
+cat("R:", R.version$version.string, "\n")
+cat("Callers: bcftools, GATK HaplotypeCaller; benchmark: rtg vcfeval vs GIAB v4.2.1\n")
+```
+:::

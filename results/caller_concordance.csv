@@ -1,0 +1,4 @@
+set,n
+bcftools_only,74
+gatk_only,64
+shared,1846
