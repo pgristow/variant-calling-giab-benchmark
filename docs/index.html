@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Peter Ristow, PhD — Principal Scientist (NGS)">
+<meta name="author" content="Peter Ristow, PhD — NGS Bioinformatics">
 <meta name="dcterms.date" content="2026-06-16">
 
 <title>Germline variant calling — and proof it’s correct</title>
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Peter Ristow, PhD — Principal Scientist (NGS) </p>
+             <p>Peter Ristow, PhD — NGS Bioinformatics </p>
           </div>
   </div>
     
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <blockquote class="blockquote">
 <p><strong>The question.</strong> Anyone can produce a VCF. The real question a client has is: <em>can I trust these calls?</em> This report calls germline variants two ways (bcftools and GATK) on a chr20 region of the Genome-in-a-Bottle reference sample <strong>HG002</strong>, then <strong>benchmarks both against the GIAB gold-standard truth set</strong> — reporting precision, recall and F1 for SNPs and indels separately. I don’t just call variants; I show you how often they’re right.</p>
-<p><em>Roche Principal Scientist (NGS) &amp; PhD — I turn sequencing data into clean, reproducible answers.</em></p>
+<p><em>PhD bioinformatician &amp; NGS specialist — I turn sequencing data into clean, reproducible answers.</em></p>
 </blockquote>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -230,23 +230,23 @@ Table&nbsp;1
 </figcaption>
 <div aria-describedby="tbl-scoreboard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="vfvaamurvq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vfvaamurvq table {
+<div id="qszquiqvcr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qszquiqvcr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vfvaamurvq thead, #vfvaamurvq tbody, #vfvaamurvq tfoot, #vfvaamurvq tr, #vfvaamurvq td, #vfvaamurvq th {
+#qszquiqvcr thead, #qszquiqvcr tbody, #qszquiqvcr tfoot, #qszquiqvcr tr, #qszquiqvcr td, #qszquiqvcr th {
   border-style: none;
 }
 
-#vfvaamurvq p {
+#qszquiqvcr p {
   margin: 0;
   padding: 0;
 }
 
-#vfvaamurvq .gt_table {
+#qszquiqvcr .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -272,12 +272,12 @@ Table&nbsp;1
   border-left-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_caption {
+#qszquiqvcr .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vfvaamurvq .gt_title {
+#qszquiqvcr .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -289,7 +289,7 @@ Table&nbsp;1
   border-bottom-width: 0;
 }
 
-#vfvaamurvq .gt_subtitle {
+#qszquiqvcr .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -301,7 +301,7 @@ Table&nbsp;1
   border-top-width: 0;
 }
 
-#vfvaamurvq .gt_heading {
+#qszquiqvcr .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -313,13 +313,13 @@ Table&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_bottom_border {
+#qszquiqvcr .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_col_headings {
+#qszquiqvcr .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -334,7 +334,7 @@ Table&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_col_heading {
+#qszquiqvcr .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -354,7 +354,7 @@ Table&nbsp;1
   overflow-x: hidden;
 }
 
-#vfvaamurvq .gt_column_spanner_outer {
+#qszquiqvcr .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -366,15 +366,15 @@ Table&nbsp;1
   padding-right: 4px;
 }
 
-#vfvaamurvq .gt_column_spanner_outer:first-child {
+#qszquiqvcr .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vfvaamurvq .gt_column_spanner_outer:last-child {
+#qszquiqvcr .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vfvaamurvq .gt_column_spanner {
+#qszquiqvcr .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -386,11 +386,11 @@ Table&nbsp;1
   width: 100%;
 }
 
-#vfvaamurvq .gt_spanner_row {
+#qszquiqvcr .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vfvaamurvq .gt_group_heading {
+#qszquiqvcr .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -416,7 +416,7 @@ Table&nbsp;1
   text-align: left;
 }
 
-#vfvaamurvq .gt_empty_group_heading {
+#qszquiqvcr .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -431,15 +431,15 @@ Table&nbsp;1
   vertical-align: middle;
 }
 
-#vfvaamurvq .gt_from_md > :first-child {
+#qszquiqvcr .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vfvaamurvq .gt_from_md > :last-child {
+#qszquiqvcr .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vfvaamurvq .gt_row {
+#qszquiqvcr .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -458,7 +458,7 @@ Table&nbsp;1
   overflow-x: hidden;
 }
 
-#vfvaamurvq .gt_stub {
+#qszquiqvcr .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -471,7 +471,7 @@ Table&nbsp;1
   padding-right: 5px;
 }
 
-#vfvaamurvq .gt_stub_row_group {
+#qszquiqvcr .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -485,15 +485,15 @@ Table&nbsp;1
   vertical-align: top;
 }
 
-#vfvaamurvq .gt_row_group_first td {
+#qszquiqvcr .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vfvaamurvq .gt_row_group_first th {
+#qszquiqvcr .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vfvaamurvq .gt_summary_row {
+#qszquiqvcr .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -503,16 +503,16 @@ Table&nbsp;1
   padding-right: 5px;
 }
 
-#vfvaamurvq .gt_first_summary_row {
+#qszquiqvcr .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_first_summary_row.thick {
+#qszquiqvcr .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vfvaamurvq .gt_last_summary_row {
+#qszquiqvcr .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -522,7 +522,7 @@ Table&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_grand_summary_row {
+#qszquiqvcr .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -532,7 +532,7 @@ Table&nbsp;1
   padding-right: 5px;
 }
 
-#vfvaamurvq .gt_first_grand_summary_row {
+#qszquiqvcr .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -542,7 +542,7 @@ Table&nbsp;1
   border-top-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_last_grand_summary_row_top {
+#qszquiqvcr .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -552,11 +552,11 @@ Table&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_striped {
+#qszquiqvcr .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vfvaamurvq .gt_table_body {
+#qszquiqvcr .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -565,7 +565,7 @@ Table&nbsp;1
   border-bottom-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_footnotes {
+#qszquiqvcr .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -579,7 +579,7 @@ Table&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_footnote {
+#qszquiqvcr .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -588,7 +588,7 @@ Table&nbsp;1
   padding-right: 5px;
 }
 
-#vfvaamurvq .gt_sourcenotes {
+#qszquiqvcr .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -602,7 +602,7 @@ Table&nbsp;1
   border-right-color: #D3D3D3;
 }
 
-#vfvaamurvq .gt_sourcenote {
+#qszquiqvcr .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -610,72 +610,72 @@ Table&nbsp;1
   padding-right: 5px;
 }
 
-#vfvaamurvq .gt_left {
+#qszquiqvcr .gt_left {
   text-align: left;
 }
 
-#vfvaamurvq .gt_center {
+#qszquiqvcr .gt_center {
   text-align: center;
 }
 
-#vfvaamurvq .gt_right {
+#qszquiqvcr .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vfvaamurvq .gt_font_normal {
+#qszquiqvcr .gt_font_normal {
   font-weight: normal;
 }
 
-#vfvaamurvq .gt_font_bold {
+#qszquiqvcr .gt_font_bold {
   font-weight: bold;
 }
 
-#vfvaamurvq .gt_font_italic {
+#qszquiqvcr .gt_font_italic {
   font-style: italic;
 }
 
-#vfvaamurvq .gt_super {
+#qszquiqvcr .gt_super {
   font-size: 65%;
 }
 
-#vfvaamurvq .gt_footnote_marks {
+#qszquiqvcr .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vfvaamurvq .gt_asterisk {
+#qszquiqvcr .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vfvaamurvq .gt_indent_1 {
+#qszquiqvcr .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vfvaamurvq .gt_indent_2 {
+#qszquiqvcr .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vfvaamurvq .gt_indent_3 {
+#qszquiqvcr .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vfvaamurvq .gt_indent_4 {
+#qszquiqvcr .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vfvaamurvq .gt_indent_5 {
+#qszquiqvcr .gt_indent_5 {
   text-indent: 25px;
 }
 
-#vfvaamurvq .katex-display {
+#qszquiqvcr .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#vfvaamurvq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#qszquiqvcr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
@@ -1341,7 +1341,7 @@ Figure&nbsp;2: Where the two callers agree and differ (raw call counts, before t
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Germline variant calling — and *proof* it's correct"</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "HG002 chr20 vs the GIAB gold standard: bcftools and GATK, benchmarked"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Peter Ristow, PhD — Principal Scientist (NGS)"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Peter Ristow, PhD — NGS Bioinformatics"</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> today</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="an">engine:</span><span class="co"> knitr</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -1352,7 +1352,7 @@ Figure&nbsp;2: Where the two callers agree and differ (raw call counts, before t
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; gold-standard truth set** — reporting precision, recall and F1 for SNPs and indels separately.</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; I don't just call variants; I show you how often they're right.</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *Roche Principal Scientist (NGS) &amp; PhD — I turn sequencing data into clean, reproducible answers.*</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; *PhD bioinformatician &amp; NGS specialist — I turn sequencing data into clean, reproducible answers.*</span></span>
 <span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>::: {.callout-note collapse="true"}</span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## How to reproduce this (one command)</span></span>

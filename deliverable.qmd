@@ -1,7 +1,7 @@
 ---
 title: "Germline Variant Calling — Accuracy Report"
 subtitle: "Sample deliverable · HG002 chr20 benchmark"
-author: "Peter Ristow, PhD — Principal Scientist (NGS)"
+author: "Peter Ristow, PhD — NGS Bioinformatics"
 date: today
 format:
   typst:
@@ -63,5 +63,5 @@ minutes and is verified by continuous integration on every change. Code and live
 `github.com/pgristow/variant-calling-giab-benchmark`.
 
 ---
-*Prepared by Peter Ristow, PhD — Roche Principal Scientist (NGS). Production engagements use a
+*Prepared by Peter Ristow, PhD — NGS bioinformatics specialist. Production engagements use a
 private, hardened pipeline on your data under NDA.*

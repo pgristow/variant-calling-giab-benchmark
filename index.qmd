@@ -1,7 +1,7 @@
 ---
 title: "Germline variant calling — and *proof* it's correct"
 subtitle: "HG002 chr20 vs the GIAB gold standard: bcftools and GATK, benchmarked"
-author: "Peter Ristow, PhD — Principal Scientist (NGS)"
+author: "Peter Ristow, PhD — NGS Bioinformatics"
 date: today
 engine: knitr
 ---
@@ -12,7 +12,7 @@ engine: knitr
 > gold-standard truth set** — reporting precision, recall and F1 for SNPs and indels separately.
 > I don't just call variants; I show you how often they're right.
 >
-> *Roche Principal Scientist (NGS) & PhD — I turn sequencing data into clean, reproducible answers.*
+> *PhD bioinformatician & NGS specialist — I turn sequencing data into clean, reproducible answers.*
 
 ::: {.callout-note collapse="true"}
 ## How to reproduce this (one command)

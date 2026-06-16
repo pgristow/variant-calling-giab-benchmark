@@ -4,7 +4,7 @@
 [![Live report](https://img.shields.io/badge/live%20report-GitHub%20Pages-2e7d32)](https://pgristow.github.io/variant-calling-giab-benchmark/)
 [![Benchmarked vs GIAB](https://img.shields.io/badge/benchmarked-GIAB%20v4.2.1-8e44ad)](https://www.nist.gov/programs-projects/genome-bottle)
 
-> **Roche Principal Scientist (NGS) & PhD — I turn sequencing data into clean, reproducible answers.**
+> **PhD bioinformatician & NGS specialist — I turn sequencing data into clean, reproducible answers.**
 
 Anyone can produce a VCF. This repo answers the question a client actually has — **can I trust these
 calls?** — by calling germline variants two ways (bcftools and GATK) on the Genome-in-a-Bottle
