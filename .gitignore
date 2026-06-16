@@ -12,6 +12,10 @@ HG002.GRCh38.300x.bam*
 _freeze/
 .Rhistory
 
+# Root-level deliverable render (the servable copy lives in docs/)
+/deliverable.pdf
+deliverable.typ
+
 # Large regenerated outputs (kept only locally for the optional IGV view)
 results/*.bam
 results/*.bai

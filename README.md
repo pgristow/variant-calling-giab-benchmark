@@ -12,6 +12,7 @@ sample **HG002** and **benchmarking both against the GIAB gold-standard truth se
 recall and F1, for SNPs and indels separately. *Most freelancers never benchmark at all.*
 
 ### 👉 [**See the live report**](https://pgristow.github.io/variant-calling-giab-benchmark/) — including the accuracy scoreboard
+### 📄 [**Sample one-page deliverable (PDF)**](https://pgristow.github.io/variant-calling-giab-benchmark/deliverable.pdf) — what lands in your inbox
 
 ---
 

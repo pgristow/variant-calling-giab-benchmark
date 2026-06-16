@@ -1,0 +1,67 @@
+---
+title: "Germline Variant Calling — Accuracy Report"
+subtitle: "Sample deliverable · HG002 chr20 benchmark"
+author: "Peter Ristow, PhD — Principal Scientist (NGS)"
+date: today
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 1.8cm
+      y: 1.8cm
+    fontsize: 10pt
+execute:
+  echo: false
+engine: knitr
+---
+
+```{r}
+suppressPackageStartupMessages({library(dplyr); library(knitr); library(ggplot2); library(scales)})
+m <- read.csv("results/benchmark_metrics.csv") |>
+  mutate(caller = recode(caller, bcftools = "bcftools", gatk = "GATK"))
+best <- m |> filter(var_type == "SNP") |> slice_max(f1, n = 1)
+pct <- function(x) sprintf("%.2f%%", 100 * x)
+```
+
+**Executive summary.** Germline variants were called from the sequencing reads and **benchmarked
+against the Genome-in-a-Bottle (GIAB) gold-standard truth set**. Two independent callers (bcftools
+and GATK) were compared on identical data. Best SNP performance: **`r best$caller`** at
+**F1 = `r sprintf('%.1f%%', 100*best$f1)`** (precision `r sprintf('%.1f%%', 100*best$precision)`,
+recall `r sprintf('%.1f%%', 100*best$recall)`). This is an *objective* measure of correctness — not
+an unverifiable VCF.
+
+### Accuracy vs GIAB truth
+
+```{r}
+m |> arrange(var_type, caller) |>
+  transmute(Caller = caller, Type = var_type,
+            Precision = pct(precision), Recall = pct(recall), F1 = pct(f1),
+            TP = tp, FP = fp, FN = fn) |>
+  kable()
+```
+
+```{r}
+#| fig-width: 5
+#| fig-height: 2.6
+ggplot(m, aes(recall, precision, colour = caller, shape = var_type)) +
+  geom_point(size = 4) +
+  scale_x_continuous(labels = percent) + scale_y_continuous(labels = percent) +
+  labs(x = "Recall", y = "Precision", colour = NULL, shape = NULL) +
+  theme_bw(base_size = 10)
+```
+
+**What this means.** SNP calls are recovered at high-99% precision and recall — the signature of a
+correctly built short-read germline pipeline. Indels score lower (they are intrinsically harder),
+which is why they are reported separately rather than hidden in a combined number.
+
+**Caveats.** Metrics are computed inside GIAB high-confidence regions; difficult genomic regions
+degrade any caller. For a sample without a truth set, accuracy is estimated against a matched
+control or orthogonal data.
+
+**Reproducibility.** The full pipeline (align → call → benchmark) re-runs from a clean clone in
+minutes and is verified by continuous integration on every change. Code and live report:
+`github.com/pgristow/variant-calling-giab-benchmark`.
+
+---
+*Prepared by Peter Ristow, PhD — Roche Principal Scientist (NGS). Production engagements use a
+private, hardened pipeline on your data under NDA.*
